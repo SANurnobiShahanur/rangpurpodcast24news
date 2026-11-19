@@ -3,74 +3,413 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Rangpur Podcast24 News - রংপুরসহ দেশের সর্বশেষ সংবাদ">
+<meta name="description" content="Rangpur Podcast24 News - রংপুরসহ বাংলাদেশের সর্বশেষ সংবাদ, ব্রেকিং নিউজ, রাজনীতি, কৃষি, শিক্ষা ও সারাদেশের খবর।">
+<meta name="theme-color" content="#c90016">
 <title>Rangpur Podcast24 News | সর্বশেষ সংবাদ</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,'Noto Sans Bengali',sans-serif;background:#f4f5f7;color:#222;line-height:1.7}
+
+body{
+ font-family:Arial,'Noto Sans Bengali',sans-serif;
+ background:#f4f5f7;
+ color:#222;
+ line-height:1.7;
+}
+
 a{text-decoration:none;color:inherit}
-header{background:#fff;border-bottom:3px solid #c90016}
-.top{background:#222;color:white;padding:6px 4%;font-size:13px;display:flex;justify-content:space-between}
-.brand{padding:18px 4%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.logo{font-size:27px;font-weight:bold;color:#c90016}
-.tagline{font-size:13px;color:#555}
-.search{display:flex;gap:5px}
-.search input{padding:10px;border:1px solid #ddd;border-radius:4px;min-width:180px}
-.search button{background:#c90016;color:white;border:0;padding:10px 15px;border-radius:4px;cursor:pointer}
-nav{background:#c90016;color:white;padding:0 4%;display:flex;flex-wrap:wrap}
-nav button{background:none;color:white;border:0;padding:13px 15px;font-size:15px;cursor:pointer}
-nav button:hover,nav button.active{background:#920011}
-.breaking{background:#fff;margin:15px auto;padding:10px 4%;max-width:1200px;display:flex;gap:12px;align-items:center;border:1px solid #eee}
-.breaking strong{background:#c90016;color:white;padding:5px 10px;white-space:nowrap}
-.breaking span{font-size:14px}
-.container{max-width:1200px;margin:20px auto;padding:0 15px}
-.section-title{border-left:5px solid #c90016;padding-left:12px;margin:22px 0 15px;font-size:22px}
-.hero-layout{display:grid;grid-template-columns:2fr 1fr;gap:18px}
-.hero-card,.side-card,.news-card{background:white;border:1px solid #eee;border-radius:5px;overflow:hidden}
-.hero-card img{width:100%;height:350px;object-fit:cover}
-.hero-info{padding:15px}
-.hero-info h2{font-size:25px;line-height:1.5;color:#222}
-.side-list{display:flex;flex-direction:column;gap:12px}
-.side-card{display:flex;gap:10px;padding:8px;cursor:pointer}
-.side-card img{width:115px;height:85px;object-fit:cover;border-radius:3px}
-.side-card h3{font-size:15px;line-height:1.5}
-.meta{font-size:12px;color:#777;margin-top:5px}
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px}
-.filters button{border:1px solid #ddd;background:white;padding:7px 13px;border-radius:20px;cursor:pointer}
-.filters button.active,.filters button:hover{background:#c90016;color:white;border-color:#c90016}
-.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.news-card img{width:100%;height:190px;object-fit:cover}
-.news-info{padding:12px}
-.news-info h3{font-size:18px;line-height:1.5;margin:5px 0}
-.category{color:#c90016;font-size:13px;font-weight:bold}
-.read-more{display:inline-block;color:#c90016;font-weight:bold;margin-top:8px;cursor:pointer}
+button{font-family:inherit}
+
+header{
+ background:#fff;
+ border-bottom:4px solid #c90016;
+ box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+
+.top{
+ background:#222;
+ color:#fff;
+ padding:7px 4%;
+ font-size:13px;
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+}
+
+.brand{
+ max-width:1250px;
+ margin:auto;
+ padding:20px 4%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ flex-wrap:wrap;
+}
+
+.logo{
+ font-size:29px;
+ font-weight:900;
+ color:#c90016;
+}
+
+.tagline{
+ font-size:13px;
+ color:#666;
+}
+
+.search{
+ display:flex;
+ gap:5px;
+}
+
+.search input{
+ padding:11px 13px;
+ border:1px solid #ddd;
+ border-radius:5px;
+ min-width:220px;
+ outline:none;
+}
+
+.search input:focus{border-color:#c90016}
+
+.search button{
+ background:#c90016;
+ color:white;
+ border:0;
+ padding:10px 18px;
+ border-radius:5px;
+ cursor:pointer;
+ font-weight:bold;
+}
+
+nav{
+ background:#c90016;
+ color:white;
+ padding:0 4%;
+ display:flex;
+ flex-wrap:wrap;
+}
+
+nav button{
+ background:none;
+ color:white;
+ border:0;
+ padding:13px 15px;
+ font-size:15px;
+ cursor:pointer;
+}
+
+nav button:hover,
+nav button.active{
+ background:#920011;
+}
+
+/* স্বয়ংক্রিয় ব্রেকিং নিউজ */
+.breaking{
+ max-width:1200px;
+ margin:17px auto;
+ padding:0 15px;
+ display:flex;
+ align-items:stretch;
+ overflow:hidden;
+ background:#fff;
+ border:1px solid #eee;
+ border-left:5px solid #c90016;
+ border-radius:5px;
+ box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.breaking strong{
+ background:#c90016;
+ color:#fff;
+ padding:10px 14px;
+ white-space:nowrap;
+ flex-shrink:0;
+ display:flex;
+ align-items:center;
+ z-index:2;
+}
+
+.ticker-window{
+ flex:1;
+ min-width:0;
+ overflow:hidden;
+ display:flex;
+ align-items:center;
+}
+
+.ticker-track{
+ display:flex;
+ align-items:center;
+ width:max-content;
+ flex-shrink:0;
+ animation:tickerMove 35s linear infinite;
+}
+
+.ticker-track span{
+ display:block;
+ flex-shrink:0;
+ white-space:nowrap;
+ padding:9px 35px;
+ color:#b00013;
+ font-size:15px;
+ font-weight:bold;
+}
+
+.ticker-track span::after{
+ content:"  ●  ";
+ color:#c90016;
+ padding-left:25px;
+}
+
+.breaking:hover .ticker-track{
+ animation-play-state:paused;
+}
+
+@keyframes tickerMove{
+ from{transform:translateX(0)}
+ to{transform:translateX(-50%)}
+}
+
+.container{
+ max-width:1200px;
+ margin:20px auto;
+ padding:0 15px;
+}
+
+.section-title{
+ border-left:5px solid #c90016;
+ padding-left:12px;
+ margin:25px 0 17px;
+ font-size:23px;
+ font-weight:bold;
+ color:#222;
+}
+
+.hero-layout{
+ display:grid;
+ grid-template-columns:2fr 1fr;
+ gap:18px;
+}
+
+.hero-card,.side-card,.news-card{
+ background:white;
+ border:1px solid #eee;
+ border-radius:7px;
+ overflow:hidden;
+ transition:transform .2s,box-shadow .2s;
+}
+
+.hero-card:hover,.news-card:hover{
+ transform:translateY(-3px);
+ box-shadow:0 5px 18px rgba(0,0,0,.10);
+}
+
+.hero-card img{
+ width:100%;
+ height:370px;
+ object-fit:cover;
+ display:block;
+}
+
+.hero-info{padding:17px}
+
+.hero-info h2{
+ font-size:26px;
+ line-height:1.5;
+ color:#222;
+ margin-top:5px;
+}
+
+.side-list{
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+
+.side-card{
+ display:flex;
+ gap:10px;
+ padding:9px;
+ cursor:pointer;
+}
+
+.side-card:hover{border-color:#c90016}
+
+.side-card img{
+ width:115px;
+ height:90px;
+ object-fit:cover;
+ border-radius:4px;
+ flex-shrink:0;
+}
+
+.side-card h3{
+ font-size:15px;
+ line-height:1.5;
+}
+
+.meta{
+ font-size:12px;
+ color:#777;
+ margin-top:5px;
+}
+
+.filters{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-bottom:17px;
+}
+
+.filters button{
+ border:1px solid #ddd;
+ background:white;
+ padding:7px 14px;
+ border-radius:20px;
+ cursor:pointer;
+ font-size:14px;
+}
+
+.filters button.active,
+.filters button:hover{
+ background:#c90016;
+ color:white;
+ border-color:#c90016;
+}
+
+.news-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:17px;
+}
+
+.news-card{cursor:pointer}
+
+.news-card img{
+ width:100%;
+ height:195px;
+ object-fit:cover;
+ display:block;
+}
+
+.news-info{padding:13px}
+
+.news-info h3{
+ font-size:18px;
+ line-height:1.55;
+ margin:6px 0;
+ color:#222;
+}
+
+.category{
+ color:#c90016;
+ font-size:13px;
+ font-weight:bold;
+}
+
+.read-more{
+ display:inline-block;
+ color:#c90016;
+ font-weight:bold;
+ margin-top:9px;
+ cursor:pointer;
+}
+
 .read-more:hover{text-decoration:underline}
-.status{text-align:center;background:white;padding:25px;margin:15px 0;border-radius:5px;color:#555}
-.article{display:none;background:white;padding:22px;margin:20px 0;border-radius:5px}
-.article img{width:100%;max-height:480px;object-fit:contain;background:#eee;margin:15px 0}
-.article h2{font-size:27px;line-height:1.5}
-.article-content{white-space:pre-wrap;line-height:2;font-size:17px}
-.close-btn{background:#c90016;color:white;border:0;padding:8px 15px;cursor:pointer;border-radius:4px}
-footer{background:#222;color:#ddd;padding:30px 5%;margin-top:35px;text-align:center}
-footer h2{color:white;margin-bottom:8px}
+
+.status{
+ text-align:center;
+ background:white;
+ padding:25px;
+ margin:15px 0;
+ border-radius:5px;
+ color:#555;
+}
+
+.article{
+ display:none;
+ background:white;
+ padding:22px;
+ margin:20px 0;
+ border-radius:7px;
+}
+
+.article img{
+ width:100%;
+ max-height:480px;
+ object-fit:contain;
+ background:#eee;
+ margin:15px 0;
+}
+
+.article h2{
+ font-size:27px;
+ line-height:1.5;
+}
+
+.article-content{
+ white-space:pre-wrap;
+ line-height:2;
+ font-size:17px;
+}
+
+.close-btn{
+ background:#c90016;
+ color:white;
+ border:0;
+ padding:8px 15px;
+ cursor:pointer;
+ border-radius:4px;
+}
+
+footer{
+ background:#222;
+ color:#ddd;
+ padding:35px 5%;
+ margin-top:40px;
+ text-align:center;
+ border-top:5px solid #c90016;
+}
+
+footer h2{
+ color:white;
+ margin-bottom:8px;
+}
+
+footer p{font-size:14px}
+
 @media(max-width:750px){
  .hero-layout{grid-template-columns:1fr}
- .hero-card img{height:240px}
+ .hero-card img{height:260px}
  .news-grid{grid-template-columns:repeat(2,1fr)}
  .brand{align-items:flex-start}
- .logo{font-size:22px}
+ .logo{font-size:23px}
  nav button{padding:10px;font-size:13px}
+ .section-title{font-size:20px}
+ .hero-info h2{font-size:22px}
 }
+
 @media(max-width:480px){
  .news-grid{grid-template-columns:1fr}
- .side-card img{width:105px}
+ .side-card img{width:105px;height:82px}
  .hero-info h2{font-size:21px}
  .search{width:100%}
- .search input{flex:1;min-width:0}
+ .search input{flex:1;min-width:0;width:100%}
  .top{font-size:11px}
+ .breaking{margin:12px 10px;padding:0}
+ .breaking strong{font-size:12px;padding:9px 8px}
+ .ticker-track span{font-size:13px;padding:9px 22px}
+ .news-card img{height:210px}
+ .article h2{font-size:22px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .ticker-track{animation:none}
+ .ticker-window{overflow-x:auto}
 }
 </style>
 </head>
@@ -85,7 +424,7 @@ footer h2{color:white;margin-bottom:8px}
 
  <div class="brand">
   <div>
-   <div class="logo">RangpurPodcast24News</div>
+   <div class="logo">Rangpur Podcast24 News</div>
    <div class="tagline">সত্য সংবাদ, সবার আগে</div>
   </div>
 
@@ -100,9 +439,15 @@ footer h2{color:white;margin-bottom:8px}
  </nav>
 </header>
 
+<!-- ব্রেকিং নিউজ -->
 <div class="breaking">
  <strong>ব্রেকিং নিউজ</strong>
- <span id="breakingText">সর্বশেষ সংবাদ জানতে আমাদের সাথেই থাকুন।</span>
+ <div class="ticker-window">
+  <div class="ticker-track" id="breakingTrack">
+   <span>সর্বশেষ সংবাদ জানতে আমাদের সাথেই থাকুন।</span>
+   <span>সর্বশেষ সংবাদ জানতে আমাদের সাথেই থাকুন।</span>
+  </div>
+ </div>
 </div>
 
 <main class="container">
@@ -122,7 +467,9 @@ footer h2{color:white;margin-bottom:8px}
   <h2 class="section-title">সর্বশেষ সংবাদ</h2>
   <div id="filters" class="filters"></div>
   <div id="newsGrid" class="news-grid"></div>
-  <div id="emptyFilter" class="status" hidden>এই বিভাগে কোনো সংবাদ পাওয়া যায়নি।</div>
+  <div id="emptyFilter" class="status" hidden>
+   এই বিভাগে কোনো সংবাদ পাওয়া যায়নি।
+  </div>
  </section>
 
  <section id="article" class="article">
@@ -143,9 +490,13 @@ footer h2{color:white;margin-bottom:8px}
 const SUPABASE_URL = "https://jjiqzupumcabyjjsqtec.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Yk8anVM0MfpNRN1EMsGFsw_omYb-uZe";
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
 
-const fallbackImage = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900";
+const fallbackImage =
+ "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900";
 
 let allNews = [];
 let allCategories = [];
@@ -154,9 +505,10 @@ let activeCategory = "all";
 document.getElementById("today").textContent =
  new Date().toLocaleDateString("bn-BD",{dateStyle:"full"});
 
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent =
+ new Date().getFullYear();
 
-function make(tag, className, text){
+function make(tag,className,text){
  const el = document.createElement(tag);
  if(className) el.className = className;
  if(text !== undefined) el.textContent = text;
@@ -164,7 +516,9 @@ function make(tag, className, text){
 }
 
 function getCategory(id){
- const found = allCategories.find(c => String(c.id) === String(id));
+ const found = allCategories.find(
+  c => String(c.id) === String(id)
+ );
  return found ? found.name : "অন্যান্য";
 }
 
@@ -172,8 +526,11 @@ function formatDate(value){
  if(!value) return "";
  const date = new Date(value);
  if(isNaN(date.getTime())) return "";
+
  return date.toLocaleDateString("bn-BD",{
-  year:"numeric",month:"long",day:"numeric"
+  year:"numeric",
+  month:"long",
+  day:"numeric"
  });
 }
 
@@ -188,9 +545,32 @@ function openArticle(item){
   return;
  }
 
- window.location.href = "news.html?id=" + encodeURIComponent(item.id);
+ window.location.href =
+  "news.html?id=" + encodeURIComponent(item.id);
 }
 
+/* প্রকাশিত নিউজ দিয়ে স্বয়ংক্রিয় ব্রেকিং টিকার */
+function updateBreakingNews(){
+ const track = document.getElementById("breakingTrack");
+
+ let message = "সর্বশেষ সংবাদ জানতে আমাদের সাথেই থাকুন।";
+
+ if(allNews.length){
+  message = allNews
+   .slice(0,15)
+   .map(item => item.title)
+   .join("  |  ");
+ }
+
+ track.replaceChildren();
+
+ const first = make("span","",message);
+ const second = make("span","",message);
+
+ track.append(first,second);
+}
+
+/* নিউজ কার্ড */
 function createNewsCard(item){
  const card = make("article","news-card");
 
@@ -198,31 +578,39 @@ function createNewsCard(item){
  img.src = getImage(item.image_url);
  img.alt = item.title;
  img.loading = "lazy";
- img.onerror = () => { img.src = fallbackImage; };
+ img.onerror = () => {
+  img.src = fallbackImage;
+ };
 
  const info = make("div","news-info");
 
  info.append(
   make("div","category",getCategory(item.category_id)),
   make("h3","",item.title),
-  make("div","meta",formatDate(item.published_at || item.created_at))
+  make("div","meta",
+   formatDate(item.published_at || item.created_at)
+  )
  );
 
  const link = make("span","read-more","বিস্তারিত পড়ুন →");
- link.addEventListener("click",()=>openArticle(item));
+
+ link.addEventListener("click",event=>{
+  event.stopPropagation();
+  openArticle(item);
+ });
 
  info.append(link);
 
- /* পুরো নিউজ কার্ডে ক্লিক করলেও বিস্তারিত পেজ খুলবে */
- card.style.cursor = "pointer";
  card.addEventListener("click",()=>{
   openArticle(item);
  });
 
  card.append(img,info);
+
  return card;
 }
 
+/* প্রধান সংবাদ */
 function renderHero(){
  const hero = document.getElementById("hero");
  const side = document.getElementById("sideNews");
@@ -235,24 +623,32 @@ function renderHero(){
  const first = allNews[0];
 
  const card = make("article","hero-card");
- card.style.cursor = "pointer";
- card.addEventListener("click",()=>openArticle(first));
+
+ card.addEventListener("click",()=>{
+  openArticle(first);
+ });
 
  const img = make("img");
  img.src = getImage(first.image_url);
  img.alt = first.title;
- img.onerror = () => { img.src = fallbackImage; };
+ img.loading = "eager";
+ img.onerror = () => {
+  img.src = fallbackImage;
+ };
 
  const info = make("div","hero-info");
 
  info.append(
   make("div","category",getCategory(first.category_id)),
   make("h2","",first.title),
-  make("div","meta",formatDate(first.published_at || first.created_at))
+  make("div","meta",
+   formatDate(first.published_at || first.created_at)
+  )
  );
 
  const link = make("span","read-more","বিস্তারিত পড়ুন →");
- link.addEventListener("click",(event)=>{
+
+ link.addEventListener("click",event=>{
   event.stopPropagation();
   openArticle(first);
  });
@@ -267,29 +663,41 @@ function renderHero(){
   const sideImg = make("img");
   sideImg.src = getImage(item.image_url);
   sideImg.alt = item.title;
-  sideImg.onerror = () => { sideImg.src = fallbackImage; };
+  sideImg.loading = "lazy";
+  sideImg.onerror = () => {
+   sideImg.src = fallbackImage;
+  };
 
-  const info = make("div");
+  const sideInfo = make("div");
 
-  info.append(
+  sideInfo.append(
    make("h3","",item.title),
-   make("div","meta",formatDate(item.published_at || item.created_at))
+   make("div","meta",
+    formatDate(item.published_at || item.created_at)
+   )
   );
 
-  sideCard.append(sideImg,info);
-  sideCard.addEventListener("click",()=>openArticle(item));
+  sideCard.append(sideImg,sideInfo);
+
+  sideCard.addEventListener("click",()=>{
+   openArticle(item);
+  });
 
   side.append(sideCard);
  });
 }
 
+/* ক্যাটাগরি */
 function renderFilters(){
  const filters = document.getElementById("filters");
  const nav = document.getElementById("mainNav");
 
  filters.replaceChildren();
 
- const choices = [{id:"all",name:"সকল সংবাদ"},...allCategories];
+ const choices = [
+  {id:"all",name:"সকল সংবাদ"},
+  ...allCategories
+ ];
 
  choices.forEach(cat=>{
   const button = make("button","",cat.name);
@@ -298,48 +706,74 @@ function renderFilters(){
    button.classList.add("active");
   }
 
-  button.addEventListener("click",()=>selectCategory(cat.id));
+  button.addEventListener("click",()=>{
+   selectCategory(cat.id);
+  });
+
   filters.append(button);
  });
 
  nav.replaceChildren();
 
- const home = make("button",activeCategory==="all"?"active":"","হোম");
+ const home = make(
+  "button",
+  activeCategory==="all"?"active":"",
+  "হোম"
+ );
+
  home.dataset.category = "all";
- home.addEventListener("click",()=>selectCategory("all"));
+
+ home.addEventListener("click",()=>{
+  selectCategory("all");
+ });
+
  nav.append(home);
 
  allCategories.forEach(cat=>{
-  const button = make("button",
+  const button = make(
+   "button",
    String(activeCategory)===String(cat.id)?"active":"",
    cat.name
   );
 
-  button.addEventListener("click",()=>selectCategory(cat.id));
+  button.addEventListener("click",()=>{
+   selectCategory(cat.id);
+  });
+
   nav.append(button);
  });
 }
 
+/* নিউজ ও সার্চ */
 function renderNews(){
  const grid = document.getElementById("newsGrid");
  grid.replaceChildren();
 
- const query = document.getElementById("searchInput").value.trim().toLowerCase();
+ const query = document
+  .getElementById("searchInput")
+  .value.trim().toLowerCase();
 
  const filtered = allNews.filter(item=>{
-  const matchesCategory = activeCategory === "all" ||
+  const matchesCategory =
+   activeCategory === "all" ||
    String(item.category_id) === String(activeCategory);
 
   const searchable = (
-   item.title+" "+item.content+" "+getCategory(item.category_id)
+   item.title+" "+
+   item.content+" "+
+   getCategory(item.category_id)
   ).toLowerCase();
 
-  return matchesCategory && (!query || searchable.includes(query));
+  return matchesCategory &&
+   (!query || searchable.includes(query));
  });
 
- filtered.forEach(item=>grid.append(createNewsCard(item)));
+ filtered.forEach(item=>{
+  grid.append(createNewsCard(item));
+ });
 
- document.getElementById("emptyFilter").hidden = filtered.length > 0;
+ document.getElementById("emptyFilter").hidden =
+  filtered.length > 0;
 }
 
 function selectCategory(id){
@@ -351,6 +785,7 @@ function selectCategory(id){
  renderNews();
 }
 
+/* Supabase থেকে সংবাদ লোড */
 async function loadNews(){
  const loading = document.getElementById("loading");
  const error = document.getElementById("error");
@@ -377,6 +812,8 @@ async function loadNews(){
 
   loading.hidden = true;
 
+  updateBreakingNews();
+
   if(!allNews.length){
    const empty = make(
     "div",
@@ -390,8 +827,6 @@ async function loadNews(){
 
   document.getElementById("heroSection").hidden = false;
   document.getElementById("latestSection").hidden = false;
-
-  document.getElementById("breakingText").textContent = allNews[0].title;
 
   renderHero();
   renderFilters();
@@ -408,39 +843,21 @@ async function loadNews(){
  }
 }
 
-document.getElementById("searchBtn").addEventListener("click",renderNews);
-document.getElementById("searchInput").addEventListener("input",renderNews);
+/* সার্চ */
+document.getElementById("searchBtn")
+ .addEventListener("click",renderNews);
 
-document.getElementById("closeArticle").addEventListener("click",()=>{
- document.getElementById("article").style.display = "none";
-});
+document.getElementById("searchInput")
+ .addEventListener("input",renderNews);
+
+/* ফিরে যাওয়া */
+document.getElementById("closeArticle")
+ .addEventListener("click",()=>{
+  document.getElementById("article").style.display = "none";
+ });
 
 loadNews();
-/* ব্রেকিং নিউজ স্ক্রল ঠিক করা */
-.ticker-window {
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-#breakingText {
-  display: inline-block;
-  width: max-content;
-  min-width: 100%;
-  padding-left: 100%;
-  animation: tickerMove 25s linear infinite !important;
-  white-space: nowrap;
-}
-
-@keyframes tickerMove {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
- }</script>
+</script>
 
 </body>
  </html>
