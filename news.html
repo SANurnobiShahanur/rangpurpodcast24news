@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Rangpur Podcast24 News - বিস্তারিত সংবাদ">
+<meta name="theme-color" content="#c90016">
+<title>বিস্তারিত সংবাদ | Rangpur Podcast24 News</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+ font-family:Arial,'Noto Sans Bengali',sans-serif;
+ background:#f3f4f6;color:#222;line-height:1.8
+}
+header{background:white;border-bottom:4px solid #c90016}
+.top{background:#222;color:white;padding:7px 4%;font-size:13px}
+.header{max-width:1100px;margin:auto;padding:17px 15px}
+.logo{font-size:26px;font-weight:bold;color:#c90016}
+.tagline{font-size:13px;color:#666}
+nav{background:#c90016;padding:10px 4%;color:white}
+nav a{color:white;text-decoration:none;font-weight:bold}
+.container{max-width:900px;margin:25px auto;padding:0 15px}
+.back{
+ display:inline-block;background:#c90016;color:white;
+ padding:8px 16px;border-radius:4px;text-decoration:none;
+ margin-bottom:18px
+}
+.article{background:white;padding:25px;border-radius:6px}
+.category{color:#c90016;font-weight:bold;font-size:15px}
+h1{font-size:30px;line-height:1.5;margin:8px 0 12px}
+.meta{font-size:13px;color:#777;margin-bottom:18px}
+.cover{width:100%;max-height:520px;object-fit:contain;background:#eee;border-radius:5px}
+.content{font-size:18px;line-height:2.1;white-space:pre-wrap;margin-top:22px;overflow-wrap:anywhere}
+.share{display:flex;flex-wrap:wrap;gap:10px;margin:25px 0}
+.share a{
+ padding:9px 17px;color:white;text-decoration:none;
+ border-radius:5px;font-weight:bold
+}
+.facebook{background:#1877f2}
+.whatsapp{background:#25d366}
+.copy{background:#555;border:0;color:white;padding:9px 17px;border-radius:5px;font-size:15px}
+.status{background:white;padding:25px;text-align:center;border-radius:5px}
+footer{background:#222;color:#ddd;text-align:center;padding:25px 10px;margin-top:35px}
+footer h2{color:white;font-size:21px}
+@media(max-width:600px){
+ .logo{font-size:21px}
+ .article{padding:16px}
+ h1{font-size:23px}
+ .content{font-size:16px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="top">রংপুরসহ সারাদেশের সর্বশেষ সংবাদ</div>
+ <div class="header">
+  <div class="logo">RangpurPodcast24News</div>
+  <div class="tagline">সত্য সংবাদ, সবার আগে</div>
+ </div>
+</header>
+
+<nav>
+ <a href="index.html">← হোমপেজে ফিরে যান</a>
+</nav>
+
+<main class="container">
+ <a class="back" href="index.html">← সকল সংবাদ</a>
+
+ <div id="loading" class="status">সংবাদ লোড হচ্ছে...</div>
+ <div id="error" class="status" hidden></div>
+
+ <article id="article" class="article" hidden>
+  <div id="category" class="category"></div>
+  <h1 id="title"></h1>
+  <div id="meta" class="meta"></div>
+  <img id="cover" class="cover" alt="সংবাদের ছবি">
+  <div id="content" class="content"></div>
+
+  <div class="share">
+   <a id="facebookShare" class="facebook" target="_blank" rel="noopener">Facebook-এ শেয়ার</a>
+   <a id="whatsappShare" class="whatsapp" target="_blank" rel="noopener">WhatsApp-এ শেয়ার</a>
+   <button id="copyLink" class="copy">লিংক কপি করুন</button>
+  </div>
+ </article>
+</main>
+
+<footer>
+ <h2>Rangpur Podcast24 News</h2>
+ <p>সত্য সংবাদ, সবার আগে</p>
+ <p>© <span id="year"></span> RangpurPodcast24News</p>
+</footer>
+
+<script>
+const SUPABASE_URL = "https://jjiqzupumcabyjjsqtec.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Yk8anVM0MfpNRN1EMsGFsw_omYb-uZe";
+
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const fallbackImage = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000";
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function showError(message){
+ document.getElementById("loading").hidden = true;
+ const error = document.getElementById("error");
+ error.hidden = false;
+ error.textContent = message;
+}
+
+function formatDate(value){
+ if(!value) return "";
+ const date = new Date(value);
+ if(isNaN(date.getTime())) return "";
+ return date.toLocaleDateString("bn-BD",{
+  year:"numeric",month:"long",day:"numeric"
+ });
+}
+
+async function loadArticle(){
+ const id = new URLSearchParams(window.location.search).get("id");
+
+ if(!id || !/^\d+$/.test(id)){
+  showError("সংবাদের সঠিক আইডি পাওয়া যায়নি। হোমপেজ থেকে সংবাদ নির্বাচন করুন।");
+  return;
+ }
+
+ try{
+  const [newsResult,categoryResult] = await Promise.all([
+   db.from("news")
+    .select("id,title,content,image_url,category_id,author_name,created_at,published_at")
+    .eq("id",Number(id))
+    .eq("status","published")
+    .maybeSingle(),
+
+   db.from("categories").select("id,name")
+  ]);
+
+  if(newsResult.error) throw newsResult.error;
+  if(categoryResult.error) throw categoryResult.error;
+
+  const news = newsResult.data;
+
+  if(!news){
+   showError("সংবাদটি পাওয়া যায়নি অথবা এটি প্রকাশিত নয়।");
+   return;
+  }
+
+  const categories = categoryResult.data || [];
+  const category = categories.find(c=>String(c.id)===String(news.category_id));
+
+  document.getElementById("category").textContent =
+   category ? category.name : "অন্যান্য";
+
+  document.getElementById("title").textContent = news.title;
+
+  document.getElementById("meta").textContent =
+   "প্রতিবেদক: " + (news.author_name || "নিজস্ব প্রতিবেদক") +
+   " | প্রকাশিত: " + formatDate(news.published_at || news.created_at);
+
+  const cover = document.getElementById("cover");
+  cover.src = news.image_url || fallbackImage;
+  cover.alt = news.title;
+  cover.onerror = ()=>{cover.src=fallbackImage;};
+
+  document.getElementById("content").textContent = news.content;
+
+  document.title = news.title + " | Rangpur Podcast24 News";
+  document.querySelector('meta[name="description"]').setAttribute(
+   "content",news.content.slice(0,150)
+  );
+
+  const pageUrl = window.location.href;
+  const shareText = news.title + " - Rangpur Podcast24 News";
+
+  document.getElementById("facebookShare").href =
+   "https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(pageUrl);
+
+  document.getElementById("whatsappShare").href =
+   "https://api.whatsapp.com/send?text="+encodeURIComponent(shareText+" "+pageUrl);
+
+  document.getElementById("copyLink").addEventListener("click",async()=>{
+   const button = document.getElementById("copyLink");
+   try{
+    await navigator.clipboard.writeText(pageUrl);
+    button.textContent = "লিংক কপি হয়েছে ✓";
+   }catch(e){
+    button.textContent = "লিংক কপি করা যায়নি";
+   }
+  });
+
+  document.getElementById("loading").hidden = true;
+  document.getElementById("article").hidden = false;
+
+ }catch(error){
+  console.error(error);
+  showError("সংবাদ লোড করা যায়নি। ইন্টারনেট অথবা ডেটাবেজ সংযোগ পরীক্ষা করুন।");
+ }
+}
+
+loadArticle();
+</script>
+
+</body>
+   </html>
