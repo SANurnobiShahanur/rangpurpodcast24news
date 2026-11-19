@@ -8,9 +8,13 @@
 
 <meta name="description" content="Rangpur Podcast24 News - রংপুরসহ বাংলাদেশের সর্বশেষ সংবাদ, ব্রেকিং নিউজ, রাজনীতি, কৃষি, শিক্ষা ও সারাদেশের খবর।">
 <meta name="theme-color" content="#c90016">
+
 <title>Rangpur Podcast24 News | সর্বশেষ সংবাদ</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Adsterra Popunder -->
+<script data-cfasync="false" src="https://abscloud.org/1/e0fedf17dac2663e2bba51dbcc8776ab"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -110,7 +114,55 @@ nav button.active{
  background:#920011;
 }
 
-/* স্বয়ংক্রিয় ব্রেকিং নিউজ */
+/* বিজ্ঞাপন */
+.ad-area{
+ width:100%;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ margin:16px auto;
+ padding:5px;
+ overflow:hidden;
+}
+
+.ad-area ins,
+.ad-area iframe{
+ max-width:100%;
+}
+
+.responsive-banner{
+ min-height:60px;
+}
+
+.banner-ad{
+ display:none;
+}
+
+.side-ad{
+ width:100%;
+ display:flex;
+ justify-content:center;
+ margin:12px auto;
+ overflow:hidden;
+}
+
+.native-ad-area{
+ width:100%;
+ margin:25px auto;
+ padding:15px;
+ background:#fff;
+ border:1px solid #eee;
+ border-radius:7px;
+ overflow:hidden;
+}
+
+.native-ad-area h3{
+ font-size:17px;
+ margin-bottom:10px;
+ color:#555;
+}
+
+/* ব্রেকিং নিউজ */
 .breaking{
  max-width:1200px;
  margin:17px auto;
@@ -385,6 +437,21 @@ footer h2{
 
 footer p{font-size:14px}
 
+@media(min-width:1000px){
+ .banner-desktop{display:flex}
+ .banner-tablet,.banner-mobile{display:none}
+}
+
+@media(min-width:481px) and (max-width:999px){
+ .banner-tablet{display:flex}
+ .banner-desktop,.banner-mobile{display:none}
+}
+
+@media(max-width:480px){
+ .banner-mobile{display:flex}
+ .banner-desktop,.banner-tablet{display:none}
+}
+
 @media(max-width:750px){
  .hero-layout{grid-template-columns:1fr}
  .hero-card img{height:260px}
@@ -394,6 +461,7 @@ footer p{font-size:14px}
  nav button{padding:10px;font-size:13px}
  .section-title{font-size:20px}
  .hero-info h2{font-size:22px}
+ .side-ad{display:none}
 }
 
 @media(max-width:480px){
@@ -442,6 +510,46 @@ footer p{font-size:14px}
  </nav>
 </header>
 
+<!-- Responsive Banner: Desktop 728x90, Tablet 468x60, Mobile 320x50 -->
+<div class="ad-area responsive-banner banner-ad banner-desktop">
+ <script>
+  atOptions = {
+   'key' : 'b672ecdfb4c46453668bce766088e80e',
+   'format' : 'iframe',
+   'height' : 90,
+   'width' : 728,
+   'params' : {}
+  };
+ </script>
+ <script src="https://bauval.org/22/b672ecdfb4c46453668bce766088e80e"></script>
+</div>
+
+<div class="ad-area responsive-banner banner-ad banner-tablet">
+ <script>
+  atOptions = {
+   'key' : '6458016cce586025ae28a4dcf4e72316',
+   'format' : 'iframe',
+   'height' : 60,
+   'width' : 468,
+   'params' : {}
+  };
+ </script>
+ <script src="https://bauval.org/22/6458016cce586025ae28a4dcf4e72316"></script>
+</div>
+
+<div class="ad-area responsive-banner banner-ad banner-mobile">
+ <script>
+  atOptions = {
+   'key' : '1b09ee383a9041a812668472c0f46c01',
+   'format' : 'iframe',
+   'height' : 50,
+   'width' : 320,
+   'params' : {}
+  };
+ </script>
+ <script src="https://bauval.org/22/1b09ee383a9041a812668472c0f46c01"></script>
+</div>
+
 <!-- ব্রেকিং নিউজ -->
 <div class="breaking">
  <strong>ব্রেকিং নিউজ</strong>
@@ -462,7 +570,23 @@ footer p{font-size:14px}
   <h2 class="section-title">প্রধান সংবাদ</h2>
   <div class="hero-layout">
    <div id="hero"></div>
-   <div id="sideNews" class="side-list"></div>
+   <div>
+    <div id="sideNews" class="side-list"></div>
+
+    <!-- 160x600 Sidebar Banner -->
+    <div class="side-ad">
+     <script>
+      atOptions = {
+       'key' : '08e88810b25acbe5d24c0eb2ca6be89f',
+       'format' : 'iframe',
+       'height' : 600,
+       'width' : 160,
+       'params' : {}
+      };
+     </script>
+     <script src="https://bauval.org/22/08e88810b25acbe5d24c0eb2ca6be89f"></script>
+    </div>
+   </div>
   </div>
  </section>
 
@@ -474,6 +598,13 @@ footer p{font-size:14px}
    এই বিভাগে কোনো সংবাদ পাওয়া যায়নি।
   </div>
  </section>
+
+ <!-- Native Banner -->
+ <div class="native-ad-area">
+  <h3>বিজ্ঞাপন</h3>
+  <script async="async" data-cfasync="false" src="https://bauval.org/21/392d9835138cc783eeedf497e99c9748"></script>
+  <div id="container-392d9835138cc783eeedf497e99c9748"></div>
+ </div>
 
  <section id="article" class="article">
   <button class="close-btn" id="closeArticle">← ফিরে যান</button>
@@ -488,6 +619,9 @@ footer p{font-size:14px}
  <p>রংপুরসহ সারাদেশের সর্বশেষ সংবাদ জানতে আমাদের সাথেই থাকুন।</p>
  <p>© <span id="year"></span> RangpurPodcast24News. সর্বস্বত্ব সংরক্ষিত।</p>
 </footer>
+
+<!-- Adsterra SocialBar -->
+<script data-cfasync="false" src="https://bauval.org/14/167367c289e2288838e19d05c9c402cb"></script>
 
 <script>
 const SUPABASE_URL = "https://jjiqzupumcabyjjsqtec.supabase.co";
