@@ -19,7 +19,7 @@ header{background:#fff;border-bottom:3px solid #c90016}
 .tagline{font-size:13px;color:#555}
 .search{display:flex;gap:5px}
 .search input{padding:10px;border:1px solid #ddd;border-radius:4px;min-width:180px}
-.search button{background:#c90016;color:white;border:0;padding:10px 15px;border-radius:4px}
+.search button{background:#c90016;color:white;border:0;padding:10px 15px;border-radius:4px;cursor:pointer}
 nav{background:#c90016;color:white;padding:0 4%;display:flex;flex-wrap:wrap}
 nav button{background:none;color:white;border:0;padding:13px 15px;font-size:15px;cursor:pointer}
 nav button:hover,nav button.active{background:#920011}
@@ -34,7 +34,7 @@ nav button:hover,nav button.active{background:#920011}
 .hero-info{padding:15px}
 .hero-info h2{font-size:25px;line-height:1.5;color:#222}
 .side-list{display:flex;flex-direction:column;gap:12px}
-.side-card{display:flex;gap:10px;padding:8px}
+.side-card{display:flex;gap:10px;padding:8px;cursor:pointer}
 .side-card img{width:115px;height:85px;object-fit:cover;border-radius:3px}
 .side-card h3{font-size:15px;line-height:1.5}
 .meta{font-size:12px;color:#777;margin-top:5px}
@@ -47,6 +47,7 @@ nav button:hover,nav button.active{background:#920011}
 .news-info h3{font-size:18px;line-height:1.5;margin:5px 0}
 .category{color:#c90016;font-size:13px;font-weight:bold}
 .read-more{display:inline-block;color:#c90016;font-weight:bold;margin-top:8px;cursor:pointer}
+.read-more:hover{text-decoration:underline}
 .status{text-align:center;background:white;padding:25px;margin:15px 0;border-radius:5px;color:#555}
 .article{display:none;background:white;padding:22px;margin:20px 0;border-radius:5px}
 .article img{width:100%;max-height:480px;object-fit:contain;background:#eee;margin:15px 0}
@@ -81,16 +82,19 @@ footer h2{color:white;margin-bottom:8px}
   <span id="today"></span>
   <span>রংপুরসহ সারাদেশের সংবাদ</span>
  </div>
+
  <div class="brand">
   <div>
    <div class="logo">RangpurPodcast24News</div>
    <div class="tagline">সত্য সংবাদ, সবার আগে</div>
   </div>
+
   <div class="search">
    <input id="searchInput" type="search" placeholder="সংবাদ খুঁজুন...">
    <button id="searchBtn">খুঁজুন</button>
   </div>
  </div>
+
  <nav id="mainNav">
   <button class="active" data-category="all">হোম</button>
  </nav>
@@ -102,6 +106,7 @@ footer h2{color:white;margin-bottom:8px}
 </div>
 
 <main class="container">
+
  <div id="loading" class="status">সংবাদ লোড হচ্ছে...</div>
  <div id="error" class="status" hidden></div>
 
@@ -124,6 +129,7 @@ footer h2{color:white;margin-bottom:8px}
   <button class="close-btn" id="closeArticle">← ফিরে যান</button>
   <div id="articleDetails"></div>
  </section>
+
 </main>
 
 <footer>
@@ -140,12 +146,14 @@ const SUPABASE_KEY = "sb_publishable_Yk8anVM0MfpNRN1EMsGFsw_omYb-uZe";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const fallbackImage = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900";
+
 let allNews = [];
 let allCategories = [];
 let activeCategory = "all";
 
 document.getElementById("today").textContent =
  new Date().toLocaleDateString("bn-BD",{dateStyle:"full"});
+
 document.getElementById("year").textContent = new Date().getFullYear();
 
 function make(tag, className, text){
@@ -164,38 +172,28 @@ function formatDate(value){
  if(!value) return "";
  const date = new Date(value);
  if(isNaN(date.getTime())) return "";
- return date.toLocaleDateString("bn-BD",{year:"numeric",month:"long",day:"numeric"});
+ return date.toLocaleDateString("bn-BD",{
+  year:"numeric",month:"long",day:"numeric"
+ });
 }
 
 function getImage(url){
  return url || fallbackImage;
 }
 
+/* প্রতিটি নিউজের আলাদা বিস্তারিত পেজ */
 function openArticle(item){
- const section = document.getElementById("article");
- const details = document.getElementById("articleDetails");
- details.replaceChildren();
+ if(!item.id){
+  alert("সংবাদের আইডি পাওয়া যায়নি।");
+  return;
+ }
 
- const heading = make("h2","",item.title);
- const meta = make("div","meta",
-  getCategory(item.category_id) + " | " +
-  (item.author_name || "নিজস্ব প্রতিবেদক") + " | " +
-  formatDate(item.published_at || item.created_at)
- );
- const img = make("img");
- img.src = getImage(item.image_url);
- img.alt = item.title;
- img.onerror = () => { img.src = fallbackImage; };
-
- const content = make("div","article-content",item.content);
-
- details.append(heading,meta,img,content);
- section.style.display = "block";
- section.scrollIntoView({behavior:"smooth"});
+ window.location.href = "news.html?id=" + encodeURIComponent(item.id);
 }
 
 function createNewsCard(item){
  const card = make("article","news-card");
+
  const img = make("img");
  img.src = getImage(item.image_url);
  img.alt = item.title;
@@ -203,6 +201,7 @@ function createNewsCard(item){
  img.onerror = () => { img.src = fallbackImage; };
 
  const info = make("div","news-info");
+
  info.append(
   make("div","category",getCategory(item.category_id)),
   make("h3","",item.title),
@@ -211,7 +210,15 @@ function createNewsCard(item){
 
  const link = make("span","read-more","বিস্তারিত পড়ুন →");
  link.addEventListener("click",()=>openArticle(item));
+
  info.append(link);
+
+ /* পুরো নিউজ কার্ডে ক্লিক করলেও বিস্তারিত পেজ খুলবে */
+ card.style.cursor = "pointer";
+ card.addEventListener("click",()=>{
+  openArticle(item);
+ });
+
  card.append(img,info);
  return card;
 }
@@ -219,45 +226,59 @@ function createNewsCard(item){
 function renderHero(){
  const hero = document.getElementById("hero");
  const side = document.getElementById("sideNews");
+
  hero.replaceChildren();
  side.replaceChildren();
 
  if(!allNews.length) return;
 
  const first = allNews[0];
+
  const card = make("article","hero-card");
+ card.style.cursor = "pointer";
+ card.addEventListener("click",()=>openArticle(first));
+
  const img = make("img");
  img.src = getImage(first.image_url);
  img.alt = first.title;
  img.onerror = () => { img.src = fallbackImage; };
 
  const info = make("div","hero-info");
+
  info.append(
   make("div","category",getCategory(first.category_id)),
   make("h2","",first.title),
   make("div","meta",formatDate(first.published_at || first.created_at))
  );
+
  const link = make("span","read-more","বিস্তারিত পড়ুন →");
- link.addEventListener("click",()=>openArticle(first));
+ link.addEventListener("click",(event)=>{
+  event.stopPropagation();
+  openArticle(first);
+ });
+
  info.append(link);
  card.append(img,info);
  hero.append(card);
 
  allNews.slice(1,5).forEach(item=>{
   const sideCard = make("article","side-card");
+
   const sideImg = make("img");
   sideImg.src = getImage(item.image_url);
   sideImg.alt = item.title;
   sideImg.onerror = () => { sideImg.src = fallbackImage; };
 
   const info = make("div");
+
   info.append(
    make("h3","",item.title),
    make("div","meta",formatDate(item.published_at || item.created_at))
   );
+
   sideCard.append(sideImg,info);
   sideCard.addEventListener("click",()=>openArticle(item));
-  sideCard.style.cursor = "pointer";
+
   side.append(sideCard);
  });
 }
@@ -265,18 +286,24 @@ function renderHero(){
 function renderFilters(){
  const filters = document.getElementById("filters");
  const nav = document.getElementById("mainNav");
+
  filters.replaceChildren();
 
  const choices = [{id:"all",name:"সকল সংবাদ"},...allCategories];
 
  choices.forEach(cat=>{
   const button = make("button","",cat.name);
-  if(String(activeCategory) === String(cat.id)) button.classList.add("active");
+
+  if(String(activeCategory) === String(cat.id)){
+   button.classList.add("active");
+  }
+
   button.addEventListener("click",()=>selectCategory(cat.id));
   filters.append(button);
  });
 
  nav.replaceChildren();
+
  const home = make("button",activeCategory==="all"?"active":"","হোম");
  home.dataset.category = "all";
  home.addEventListener("click",()=>selectCategory("all"));
@@ -287,6 +314,7 @@ function renderFilters(){
    String(activeCategory)===String(cat.id)?"active":"",
    cat.name
   );
+
   button.addEventListener("click",()=>selectCategory(cat.id));
   nav.append(button);
  });
@@ -302,7 +330,10 @@ function renderNews(){
   const matchesCategory = activeCategory === "all" ||
    String(item.category_id) === String(activeCategory);
 
-  const searchable = (item.title+" "+item.content+" "+getCategory(item.category_id)).toLowerCase();
+  const searchable = (
+   item.title+" "+item.content+" "+getCategory(item.category_id)
+  ).toLowerCase();
+
   return matchesCategory && (!query || searchable.includes(query));
  });
 
@@ -313,7 +344,9 @@ function renderNews(){
 
 function selectCategory(id){
  activeCategory = id;
+
  document.getElementById("article").style.display = "none";
+
  renderFilters();
  renderNews();
 }
@@ -324,12 +357,16 @@ async function loadNews(){
 
  try{
   const [categoryResult,newsResult] = await Promise.all([
-   db.from("categories").select("id,name").order("id"),
+
+   db.from("categories")
+    .select("id,name")
+    .order("id"),
+
    db.from("news")
     .select("id,title,content,image_url,category_id,author_name,created_at,published_at")
     .eq("status","published")
-    .order("published_at",{ascending:false})
     .order("created_at",{ascending:false})
+
   ]);
 
   if(categoryResult.error) throw categoryResult.error;
@@ -341,7 +378,12 @@ async function loadNews(){
   loading.hidden = true;
 
   if(!allNews.length){
-   const empty = make("div","status","এখনো কোনো প্রকাশিত সংবাদ নেই। অ্যাডমিন প্যানেল থেকে সংবাদ প্রকাশ করুন।");
+   const empty = make(
+    "div",
+    "status",
+    "এখনো কোনো প্রকাশিত সংবাদ নেই। অ্যাডমিন প্যানেল থেকে সংবাদ প্রকাশ করুন।"
+   );
+
    document.querySelector("main.container").prepend(empty);
    return;
   }
@@ -358,18 +400,23 @@ async function loadNews(){
  }catch(err){
   loading.hidden = true;
   error.hidden = false;
-  error.textContent = "সংবাদ লোড করা যায়নি। ইন্টারনেট সংযোগ অথবা ডেটাবেজ সেটিং পরীক্ষা করুন।";
+
+  error.textContent =
+   "সংবাদ লোড করা যায়নি। ইন্টারনেট সংযোগ অথবা ডেটাবেজ সেটিং পরীক্ষা করুন।";
+
   console.error("Supabase error:",err);
  }
 }
 
 document.getElementById("searchBtn").addEventListener("click",renderNews);
 document.getElementById("searchInput").addEventListener("input",renderNews);
+
 document.getElementById("closeArticle").addEventListener("click",()=>{
  document.getElementById("article").style.display = "none";
 });
 
 loadNews();
 </script>
+
 </body>
-   </html>
+  </html>
