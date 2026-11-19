@@ -416,7 +416,31 @@ document.getElementById("closeArticle").addEventListener("click",()=>{
 });
 
 loadNews();
-</script>
+/* ব্রেকিং নিউজ স্ক্রল ঠিক করা */
+.ticker-window {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#breakingText {
+  display: inline-block;
+  width: max-content;
+  min-width: 100%;
+  padding-left: 100%;
+  animation: tickerMove 25s linear infinite !important;
+  white-space: nowrap;
+}
+
+@keyframes tickerMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+ }</script>
 
 </body>
  </html>
