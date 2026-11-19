@@ -3,48 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta name="description" content="Rangpur Podcast24 News - বিস্তারিত সংবাদ">
 <meta name="theme-color" content="#c90016">
+
 <title>বিস্তারিত সংবাদ | Rangpur Podcast24 News</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- Adsterra Popunder -->
+<script data-cfasync="false" src="https://abscloud.org/1/e0fedf17dac2663e2bba51dbcc8776ab"></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
  font-family:Arial,'Noto Sans Bengali',sans-serif;
- background:#f3f4f6;color:#222;line-height:1.8
+ background:#f3f4f6;
+ color:#222;
+ line-height:1.8
 }
-header{background:white;border-bottom:4px solid #c90016}
-.top{background:#222;color:white;padding:7px 4%;font-size:13px}
-.header{max-width:1100px;margin:auto;padding:17px 15px}
-.logo{font-size:26px;font-weight:bold;color:#c90016}
-.tagline{font-size:13px;color:#666}
-nav{background:#c90016;padding:10px 4%;color:white}
-nav a{color:white;text-decoration:none;font-weight:bold}
-.container{max-width:900px;margin:25px auto;padding:0 15px}
+
+header{
+ background:white;
+ border-bottom:4px solid #c90016
+}
+
+.top{
+ background:#222;
+ color:white;
+ padding:7px 4%;
+ font-size:13px
+}
+
+.header{
+ max-width:1100px;
+ margin:auto;
+ padding:17px 15px
+}
+
+.logo{
+ font-size:26px;
+ font-weight:bold;
+ color:#c90016
+}
+
+.tagline{
+ font-size:13px;
+ color:#666
+}
+
+nav{
+ background:#c90016;
+ padding:10px 4%;
+ color:white
+}
+
+nav a{
+ color:white;
+ text-decoration:none;
+ font-weight:bold
+}
+
+.container{
+ max-width:900px;
+ margin:25px auto;
+ padding:0 15px
+}
+
 .back{
- display:inline-block;background:#c90016;color:white;
- padding:8px 16px;border-radius:4px;text-decoration:none;
+ display:inline-block;
+ background:#c90016;
+ color:white;
+ padding:8px 16px;
+ border-radius:4px;
+ text-decoration:none;
  margin-bottom:18px
 }
-.article{background:white;padding:25px;border-radius:6px}
-.category{color:#c90016;font-weight:bold;font-size:15px}
-h1{font-size:30px;line-height:1.5;margin:8px 0 12px}
-.meta{font-size:13px;color:#777;margin-bottom:18px}
-.cover{width:100%;max-height:520px;object-fit:contain;background:#eee;border-radius:5px}
-.content{font-size:18px;line-height:2.1;white-space:pre-wrap;margin-top:22px;overflow-wrap:anywhere}
-.share{display:flex;flex-wrap:wrap;gap:10px;margin:25px 0}
-.share a{
- padding:9px 17px;color:white;text-decoration:none;
- border-radius:5px;font-weight:bold
+
+/* বিজ্ঞাপন */
+.ad-area{
+ width:100%;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ margin:17px auto;
+ padding:5px;
+ overflow:hidden
 }
+
+.banner-ad{display:none}
+
+@media(min-width:1000px){
+ .banner-desktop{display:flex}
+}
+
+@media(min-width:481px) and (max-width:999px){
+ .banner-tablet{display:flex}
+}
+
+@media(max-width:480px){
+ .banner-mobile{display:flex}
+}
+
+.native-ad-area{
+ width:100%;
+ margin:25px auto;
+ padding:15px;
+ background:white;
+ border:1px solid #eee;
+ border-radius:7px;
+ overflow:hidden
+}
+
+.native-ad-area h3{
+ font-size:16px;
+ color:#555;
+ margin-bottom:10px
+}
+
+.article{
+ background:white;
+ padding:25px;
+ border-radius:6px
+}
+
+.category{
+ color:#c90016;
+ font-weight:bold;
+ font-size:15px
+}
+
+h1{
+ font-size:30px;
+ line-height:1.5;
+ margin:8px 0 12px
+}
+
+.meta{
+ font-size:13px;
+ color:#777;
+ margin-bottom:18px
+}
+
+.cover{
+ width:100%;
+ max-height:520px;
+ object-fit:contain;
+ background:#eee;
+ border-radius:5px
+}
+
+.content{
+ font-size:18px;
+ line-height:2.1;
+ white-space:pre-wrap;
+ margin-top:22px;
+ overflow-wrap:anywhere
+}
+
+.share{
+ display:flex;
+ flex-wrap:wrap;
+ gap:10px;
+ margin:25px 0
+}
+
+.share a{
+ padding:9px 17px;
+ color:white;
+ text-decoration:none;
+ border-radius:5px;
+ font-weight:bold
+}
+
 .facebook{background:#1877f2}
 .whatsapp{background:#25d366}
-.copy{background:#555;border:0;color:white;padding:9px 17px;border-radius:5px;font-size:15px}
-.status{background:white;padding:25px;text-align:center;border-radius:5px}
-footer{background:#222;color:#ddd;text-align:center;padding:25px 10px;margin-top:35px}
-footer h2{color:white;font-size:21px}
+
+.copy{
+ background:#555;
+ border:0;
+ color:white;
+ padding:9px 17px;
+ border-radius:5px;
+ font-size:15px;
+ cursor:pointer
+}
+
+.status{
+ background:white;
+ padding:25px;
+ text-align:center;
+ border-radius:5px
+}
+
+footer{
+ background:#222;
+ color:#ddd;
+ text-align:center;
+ padding:25px 10px;
+ margin-top:35px
+}
+
+footer h2{
+ color:white;
+ font-size:21px
+}
+
 @media(max-width:600px){
  .logo{font-size:21px}
  .article{padding:16px}
@@ -58,6 +223,7 @@ footer h2{color:white;font-size:21px}
 
 <header>
  <div class="top">রংপুরসহ সারাদেশের সর্বশেষ সংবাদ</div>
+
  <div class="header">
   <div class="logo">RangpurPodcast24News</div>
   <div class="tagline">সত্য সংবাদ, সবার আগে</div>
@@ -68,7 +234,50 @@ footer h2{color:white;font-size:21px}
  <a href="index.html">← হোমপেজে ফিরে যান</a>
 </nav>
 
+<!-- Responsive Banner: Desktop 728x90 -->
+<div class="ad-area banner-ad banner-desktop">
+ <script>
+  atOptions = {
+   'key' : 'b672ecdfb4c46453668bce766088e80e',
+   'format' : 'iframe',
+   'height' : 90,
+   'width' : 728,
+   'params' : {}
+  };
+ </script>
+ <script src="https://bauval.org/22/b672ecdfb4c46453668bce766088e80e"></script>
+</div>
+
+<!-- Responsive Banner: Tablet 468x60 -->
+<div class="ad-area banner-ad banner-tablet">
+ <script>
+  atOptions = {
+   'key' : '6458016cce586025ae28a4dcf4e72316',
+   'format' : 'iframe',
+   'height' : 60,
+   'width' : 468,
+   'params' : {}
+  };
+ </script>
+ <script src="https://bauval.org/22/6458016cce586025ae28a4dcf4e72316"></script>
+</div>
+
+<!-- Responsive Banner: Mobile 320x50 -->
+<div class="ad-area banner-ad banner-mobile">
+ <script>
+  atOptions = {
+   'key' : '1b09ee383a9041a812668472c0f46c01',
+   'format' : 'iframe',
+   'height' : 50,
+   'width' : 320,
+   'params' : {}
+  };
+ </script>
+ <script src="https://bauval.org/22/1b09ee383a9041a812668472c0f46c01"></script>
+</div>
+
 <main class="container">
+
  <a class="back" href="index.html">← সকল সংবাদ</a>
 
  <div id="loading" class="status">সংবাদ লোড হচ্ছে...</div>
@@ -78,7 +287,9 @@ footer h2{color:white;font-size:21px}
   <div id="category" class="category"></div>
   <h1 id="title"></h1>
   <div id="meta" class="meta"></div>
+
   <img id="cover" class="cover" alt="সংবাদের ছবি">
+
   <div id="content" class="content"></div>
 
   <div class="share">
@@ -87,6 +298,14 @@ footer h2{color:white;font-size:21px}
    <button id="copyLink" class="copy">লিংক কপি করুন</button>
   </div>
  </article>
+
+ <!-- Native Banner -->
+ <div class="native-ad-area">
+  <h3>বিজ্ঞাপন</h3>
+  <script async="async" data-cfasync="false" src="https://bauval.org/21/392d9835138cc783eeedf497e99c9748"></script>
+  <div id="container-392d9835138cc783eeedf497e99c9748"></div>
+ </div>
+
 </main>
 
 <footer>
@@ -95,18 +314,27 @@ footer h2{color:white;font-size:21px}
  <p>© <span id="year"></span> RangpurPodcast24News</p>
 </footer>
 
+<!-- Adsterra SocialBar -->
+<script data-cfasync="false" src="https://bauval.org/14/167367c289e2288838e19d05c9c402cb"></script>
+
 <script>
 const SUPABASE_URL = "https://jjiqzupumcabyjjsqtec.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Yk8anVM0MfpNRN1EMsGFsw_omYb-uZe";
 
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const db = window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
 
-const fallbackImage = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000";
+const fallbackImage =
+ "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000";
 
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent =
+ new Date().getFullYear();
 
 function showError(message){
  document.getElementById("loading").hidden = true;
+
  const error = document.getElementById("error");
  error.hidden = false;
  error.textContent = message;
@@ -114,30 +342,42 @@ function showError(message){
 
 function formatDate(value){
  if(!value) return "";
+
  const date = new Date(value);
+
  if(isNaN(date.getTime())) return "";
+
  return date.toLocaleDateString("bn-BD",{
-  year:"numeric",month:"long",day:"numeric"
+  year:"numeric",
+  month:"long",
+  day:"numeric"
  });
 }
 
 async function loadArticle(){
- const id = new URLSearchParams(window.location.search).get("id");
+ const id = new URLSearchParams(
+  window.location.search
+ ).get("id");
 
  if(!id || !/^\d+$/.test(id)){
-  showError("সংবাদের সঠিক আইডি পাওয়া যায়নি। হোমপেজ থেকে সংবাদ নির্বাচন করুন।");
+  showError(
+   "সংবাদের সঠিক আইডি পাওয়া যায়নি। হোমপেজ থেকে সংবাদ নির্বাচন করুন।"
+  );
   return;
  }
 
  try{
   const [newsResult,categoryResult] = await Promise.all([
+
    db.from("news")
     .select("id,title,content,image_url,category_id,author_name,created_at,published_at")
     .eq("id",Number(id))
     .eq("status","published")
     .maybeSingle(),
 
-   db.from("categories").select("id,name")
+   db.from("categories")
+    .select("id,name")
+
   ]);
 
   if(newsResult.error) throw newsResult.error;
@@ -151,54 +391,78 @@ async function loadArticle(){
   }
 
   const categories = categoryResult.data || [];
-  const category = categories.find(c=>String(c.id)===String(news.category_id));
+
+  const category = categories.find(
+   c => String(c.id) === String(news.category_id)
+  );
 
   document.getElementById("category").textContent =
    category ? category.name : "অন্যান্য";
 
-  document.getElementById("title").textContent = news.title;
+  document.getElementById("title").textContent =
+   news.title;
 
   document.getElementById("meta").textContent =
-   "প্রতিবেদক: " + (news.author_name || "নিজস্ব প্রতিবেদক") +
-   " | প্রকাশিত: " + formatDate(news.published_at || news.created_at);
+   "প্রতিবেদক: " +
+   (news.author_name || "নিজস্ব প্রতিবেদক") +
+   " | প্রকাশিত: " +
+   formatDate(news.published_at || news.created_at);
 
   const cover = document.getElementById("cover");
+
   cover.src = news.image_url || fallbackImage;
   cover.alt = news.title;
-  cover.onerror = ()=>{cover.src=fallbackImage;};
 
-  document.getElementById("content").textContent = news.content;
+  cover.onerror = ()=>{
+   cover.src = fallbackImage;
+  };
 
-  document.title = news.title + " | Rangpur Podcast24 News";
-  document.querySelector('meta[name="description"]').setAttribute(
-   "content",news.content.slice(0,150)
+  document.getElementById("content").textContent =
+   news.content;
+
+  document.title =
+   news.title + " | Rangpur Podcast24 News";
+
+  document.querySelector(
+   'meta[name="description"]'
+  ).setAttribute(
+   "content",
+   news.content.slice(0,150)
   );
 
   const pageUrl = window.location.href;
-  const shareText = news.title + " - Rangpur Podcast24 News";
+  const shareText =
+   news.title + " - Rangpur Podcast24 News";
 
   document.getElementById("facebookShare").href =
-   "https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(pageUrl);
+   "https://www.facebook.com/sharer/sharer.php?u=" +
+   encodeURIComponent(pageUrl);
 
   document.getElementById("whatsappShare").href =
-   "https://api.whatsapp.com/send?text="+encodeURIComponent(shareText+" "+pageUrl);
+   "https://api.whatsapp.com/send?text=" +
+   encodeURIComponent(shareText+" "+pageUrl);
 
-  document.getElementById("copyLink").addEventListener("click",async()=>{
-   const button = document.getElementById("copyLink");
-   try{
-    await navigator.clipboard.writeText(pageUrl);
-    button.textContent = "লিংক কপি হয়েছে ✓";
-   }catch(e){
-    button.textContent = "লিংক কপি করা যায়নি";
-   }
-  });
+  document.getElementById("copyLink")
+   .addEventListener("click",async()=>{
+    const button = document.getElementById("copyLink");
+
+    try{
+     await navigator.clipboard.writeText(pageUrl);
+     button.textContent = "লিংক কপি হয়েছে ✓";
+    }catch(e){
+     button.textContent = "লিংক কপি করা যায়নি";
+    }
+   });
 
   document.getElementById("loading").hidden = true;
   document.getElementById("article").hidden = false;
 
  }catch(error){
   console.error(error);
-  showError("সংবাদ লোড করা যায়নি। ইন্টারনেট অথবা ডেটাবেজ সংযোগ পরীক্ষা করুন।");
+
+  showError(
+   "সংবাদ লোড করা যায়নি। ইন্টারনেট অথবা ডেটাবেজ সংযোগ পরীক্ষা করুন।"
+  );
  }
 }
 
@@ -206,4 +470,4 @@ loadArticle();
 </script>
 
 </body>
-   </html>
+ </html>
