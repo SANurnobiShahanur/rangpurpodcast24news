@@ -326,6 +326,9 @@ const db = window.supabase.createClient(
 const fallbackImage =
  "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000";
 
+// সংবাদ শেয়ার ও লিংক কপির জন্য Netlify শেয়ার ফাংশনের ঠিকানা
+const SHARE_BASE_URL = "https://rangpurpodcast24news.netlify.app";
+
 document.getElementById("year").textContent =
  new Date().getFullYear();
 
@@ -457,7 +460,9 @@ async function loadArticle(){
    news.content.slice(0,150)
   );
 
-  const pageUrl = window.location.href;
+  // সোশ্যাল মিডিয়া প্রিভিউয়ের জন্য Netlify শেয়ার লিংক
+  const pageUrl =
+   SHARE_BASE_URL + "/share/" + encodeURIComponent(news.id);
   const shareText =
    news.title + " - Rangpur Podcast24 News";
 
