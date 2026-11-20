@@ -387,6 +387,27 @@ async function loadArticle(){
    return;
   }
 
+  // প্রকাশিত সংবাদে ভিউ কাউন্টার চালু
+  let viewCount = null;
+
+  try{
+   const viewResult = await db.rpc(
+    "increment_news_view",
+    {
+     p_news_id: Number(id)
+    }
+   );
+
+   if(viewResult.error){
+    console.warn("ভিউ কাউন্টার আপডেট হয়নি:",viewResult.error);
+   }else{
+    viewCount = viewResult.data;
+   }
+
+  }catch(viewError){
+   console.warn("ভিউ কাউন্টার সমস্যা:",viewError);
+  }
+
   const categories = categoryResult.data || [];
 
   const category = categories.find(
@@ -399,11 +420,20 @@ async function loadArticle(){
   document.getElementById("title").textContent =
    news.title;
 
-  document.getElementById("meta").textContent =
+  let metaText =
    "প্রতিবেদক: " +
    (news.author_name || "নিজস্ব প্রতিবেদক") +
    " | প্রকাশিত: " +
    formatDate(news.published_at || news.created_at);
+
+  if(viewCount !== null){
+   metaText += " | পঠিত: " +
+    Number(viewCount).toLocaleString("bn-BD") +
+    " বার";
+  }
+
+  document.getElementById("meta").textContent =
+   metaText;
 
   const cover = document.getElementById("cover");
 
