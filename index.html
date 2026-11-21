@@ -9,6 +9,9 @@
 <meta name="description" content="Rangpur Podcast24 News - রংপুরসহ বাংলাদেশের সর্বশেষ সংবাদ, ব্রেকিং নিউজ, রাজনীতি, কৃষি, শিক্ষা ও সারাদেশের খবর।">
 <meta name="theme-color" content="#b90018">
 
+<link rel="icon" type="image/webp" href="file_00000000fc808207bb045ee4d0c03fec.webp">
+<link rel="apple-touch-icon" href="file_00000000fc808207bb045ee4d0c03fec.webp">
+
 <title>Rangpur Podcast24 News | সর্বশেষ সংবাদ</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -46,7 +49,6 @@ a{
 }
 
 button,input{font-family:inherit}
-
 button{cursor:pointer}
 
 .site-top{
@@ -78,6 +80,22 @@ button{cursor:pointer}
  justify-content:space-between;
  align-items:center;
  gap:18px;
+}
+
+/* Website Logo */
+.brand-identity{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ min-width:0;
+}
+
+.brand-logo{
+ width:85px;
+ height:85px;
+ object-fit:contain;
+ display:block;
+ flex-shrink:0;
 }
 
 .brand-name{
@@ -181,10 +199,7 @@ nav button.active{
  overflow:hidden;
 }
 
-.ad-area iframe{
- max-width:100%;
-}
-
+.ad-area iframe{max-width:100%}
 .banner-ad{display:none}
 
 @media(min-width:1000px){
@@ -322,9 +337,7 @@ nav button.active{
  transition:transform .2s,box-shadow .2s;
 }
 
-.hero-card{
- cursor:pointer;
-}
+.hero-card{cursor:pointer}
 
 .hero-card:hover,
 .news-card:hover{
@@ -559,9 +572,7 @@ footer p{
  color:#c6c8ce;
 }
 
-.footer-links{
- margin-top:18px;
-}
+.footer-links{margin-top:18px}
 
 .footer-links a{
  display:inline-block;
@@ -586,7 +597,7 @@ footer p{
 }
 
 @media(max-width:800px){
- .brand{align-items:flex-start}
+ .brand{align-items:center}
  .brand-name{font-size:25px}
  .hero-layout{grid-template-columns:1fr}
  .hero-card img{height:300px}
@@ -596,11 +607,27 @@ footer p{
 
 @media(max-width:600px){
  .site-top{font-size:11px}
+
  .brand{
   flex-direction:column;
   padding:15px;
  }
- .brand-name{font-size:23px}
+
+ .brand-identity{
+  justify-content:center;
+  width:100%;
+  gap:10px;
+ }
+
+ .brand-logo{
+  width:72px;
+  height:72px;
+ }
+
+ .brand-name{font-size:21px}
+ .brand-mark{font-size:10px}
+ .brand-tagline{font-size:12px}
+
  .search{width:100%}
  nav button{padding:11px 13px;font-size:13px}
  .breaking{margin:12px 10px}
@@ -641,10 +668,20 @@ footer p{
 
  <div class="masthead">
   <div class="brand">
-   <div>
-    <div class="brand-mark">ONLINE NEWS PORTAL</div>
-    <div class="brand-name">Rangpur Podcast24 News</div>
-    <div class="brand-tagline">সত্য সংবাদ, সবার আগে</div>
+
+   <!-- Rangpur Podcast24 News Logo and Name -->
+   <div class="brand-identity">
+    <img
+     class="brand-logo"
+     src="file_00000000fc808207bb045ee4d0c03fec.webp"
+     alt="Rangpur Podcast24 News Logo"
+    >
+
+    <div>
+     <div class="brand-mark">ONLINE NEWS PORTAL</div>
+     <div class="brand-name">Rangpur Podcast24 News</div>
+     <div class="brand-tagline">সত্য সংবাদ, সবার আগে</div>
+    </div>
    </div>
 
    <div class="search">
@@ -760,7 +797,6 @@ footer p{
   </div>
 
   <div id="filters" class="filters"></div>
-
   <div id="newsGrid" class="news-grid"></div>
 
   <div id="emptyFilter" class="status" hidden>
