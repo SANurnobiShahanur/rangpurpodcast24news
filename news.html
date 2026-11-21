@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="description" content="Rangpur Podcast24 News - বিস্তারিত সংবাদ">
+
+<!-- Google-কে এই সাধারণ পেজটি ইনডেক্স না করতে বলা হয়েছে -->
+<meta name="robots" content="noindex,follow">
+
 <meta name="theme-color" content="#c90016">
 
 <title>বিস্তারিত সংবাদ | Rangpur Podcast24 News</title>
@@ -194,6 +198,14 @@ h1{
  border-radius:5px
 }
 
+.status a{
+ display:inline-block;
+ margin-top:15px;
+ color:#c90016;
+ font-weight:bold;
+ text-decoration:none
+}
+
 footer{
  background:#222;
  color:#ddd;
@@ -326,7 +338,7 @@ const db = window.supabase.createClient(
 const fallbackImage =
  "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000";
 
-// সংবাদ শেয়ার ও লিংক কপির জন্য Netlify শেয়ার ফাংশনের ঠিকানা
+// Netlify শেয়ার ফাংশনের ঠিকানা
 const SHARE_BASE_URL = "https://rangpurpodcast24news.netlify.app";
 
 document.getElementById("year").textContent =
@@ -337,7 +349,17 @@ function showError(message){
 
  const error = document.getElementById("error");
  error.hidden = false;
- error.textContent = message;
+ error.innerHTML = "";
+
+ const messageText = document.createElement("p");
+ messageText.textContent = message;
+
+ const homeLink = document.createElement("a");
+ homeLink.href = "index.html";
+ homeLink.textContent = "হোমপেজে ফিরে যান";
+
+ error.appendChild(messageText);
+ error.appendChild(homeLink);
 }
 
 function formatDate(value){
@@ -355,23 +377,37 @@ function formatDate(value){
 }
 
 async function loadArticle(){
+
  const id = new URLSearchParams(
   window.location.search
  ).get("id");
 
- if(!id || !/^\d+$/.test(id)){
-  showError(
-   "সংবাদের সঠিক আইডি পাওয়া যায়নি। হোমপেজ থেকে সংবাদ নির্বাচন করুন।"
-  );
+ // ID না থাকলে হোমপেজে পাঠিয়ে দেওয়া হবে
+ if(!id){
+  window.location.replace("index.html");
+  return;
+ }
+
+ // ভুল বা অবৈধ ID হলে হোমপেজে পাঠানো হবে
+ if(!/^[1-9]\d*$/.test(id)){
+  window.location.replace("index.html");
+  return;
+ }
+
+ const newsId = Number(id);
+
+ if(!Number.isSafeInteger(newsId)){
+  window.location.replace("index.html");
   return;
  }
 
  try{
+
   const [newsResult,categoryResult] = await Promise.all([
 
    db.from("news")
     .select("id,title,content,image_url,category_id,author_name,created_at,published_at")
-    .eq("id",Number(id))
+    .eq("id",newsId)
     .eq("status","published")
     .maybeSingle(),
 
@@ -394,10 +430,11 @@ async function loadArticle(){
   let viewCount = null;
 
   try{
+
    const viewResult = await db.rpc(
     "increment_news_view",
     {
-     p_news_id: Number(id)
+     p_news_id: newsId
     }
    );
 
@@ -444,11 +481,12 @@ async function loadArticle(){
   cover.alt = news.title;
 
   cover.onerror = ()=>{
+   cover.onerror = null;
    cover.src = fallbackImage;
   };
 
   document.getElementById("content").textContent =
-   news.content;
+   news.content || "";
 
   document.title =
    news.title + " | Rangpur Podcast24 News";
@@ -457,12 +495,13 @@ async function loadArticle(){
    'meta[name="description"]'
   ).setAttribute(
    "content",
-   news.content.slice(0,150)
+   (news.content || news.title).slice(0,150)
   );
 
-  // সোশ্যাল মিডিয়া প্রিভিউয়ের জন্য Netlify শেয়ার লিংক
+  // সংবাদ শেয়ার করার লিংক
   const pageUrl =
    SHARE_BASE_URL + "/share/" + encodeURIComponent(news.id);
+
   const shareText =
    news.title + " - Rangpur Podcast24 News";
 
@@ -476,13 +515,31 @@ async function loadArticle(){
 
   document.getElementById("copyLink")
    .addEventListener("click",async()=>{
+
     const button = document.getElementById("copyLink");
 
     try{
      await navigator.clipboard.writeText(pageUrl);
      button.textContent = "লিংক কপি হয়েছে ✓";
     }catch(e){
-     button.textContent = "লিংক কপি করা যায়নি";
+
+     // Clipboard API কাজ না করলে বিকল্প পদ্ধতি
+     try{
+      const temp = document.createElement("textarea");
+      temp.value = pageUrl;
+      document.body.appendChild(temp);
+      temp.select();
+
+      const copied = document.execCommand("copy");
+      temp.remove();
+
+      button.textContent = copied
+       ? "লিংক কপি হয়েছে ✓"
+       : "লিংক কপি করা যায়নি";
+
+     }catch(copyError){
+      button.textContent = "লিংক কপি করা যায়নি";
+     }
     }
    });
 
@@ -490,6 +547,7 @@ async function loadArticle(){
   document.getElementById("article").hidden = false;
 
  }catch(error){
+
   console.error(error);
 
   showError(
